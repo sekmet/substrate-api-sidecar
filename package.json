@@ -10,7 +10,7 @@
     "registry": "https://registry.npmjs.org"
   },
   "bin": {
-    "substrate-api-sidecar": "./build/src/main.js"
+    "substrate-api-sidecar": "./src/main.js"
   },
   "repository": {
     "type": "git",
@@ -23,16 +23,16 @@
     "url": "https://github.com/paritytech/substrate-api-sidecar/issues"
   },
   "scripts": {
-    "build": "rimraf build/ && tsc",
+    "build": "tsc",
     "build:calc": "bash ./calc/build.sh",
     "build:docker": "docker build -t substrate-api-sidecar .",
     "build:docs": "(cd docs && yarn && yarn build)",
     "main": "node ./build/src/main.js",
     "lint": "tsc && eslint . --ext ts",
     "deploy": "yarn build && standard-version",
-    "start": "yarn run build && yarn run main",
-    "start:log-rpc": "yarn run build && NODE_ENV=test yarn run main ",
-    "dev": "tsc-watch --onSuccess \"yarn run main\"",
+    "start": "yarn run main",
+    "start:log-rpc": "NODE_ENV=test yarn run main ",
+    "start:dev": "tsc-watch --onSuccess \"yarn run main\"",
     "test": "jest --silent"
   },
   "dependencies": {
@@ -60,7 +60,6 @@
     "eslint-plugin-simple-import-sort": "^5.0.3",
     "jest": "^26.6.0",
     "prettier": "^2.1.2",
-    "rimraf": "^3.0.2",
     "standard-version": "^9.0.0",
     "ts-jest": "^26.4.1",
     "tsc-watch": "^4.2.9",

@@ -108,9 +108,10 @@ yarn
 
 ```bash
 # For live reload in development
-yarn dev
+yarn start:dev
 
 # To build and run
+yarn build
 yarn start
 ```
 
