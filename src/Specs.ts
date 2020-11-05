@@ -91,7 +91,7 @@ export class Specs {
 		this._specs.appendSpec(
 			MODULES.LOG,
 			this._specs.getSpec(CONFIG.LEVEL, 'Log level', {
-				default: 'info',
+				default: 'http',
 				regexp: /^error|warn|info|http|verbose|debug|silly$/,
 			})
 		);
