@@ -1,10 +1,10 @@
 import { ApiPromise } from '@polkadot/api';
 import { GenericCall, Struct } from '@polkadot/types';
 import {
-	AccountId,
+	// AccountId,
 	Block,
 	BlockHash,
-	Digest,
+	// Digest,
 	DispatchInfo,
 	EventRecord,
 	Hash,
@@ -45,10 +45,9 @@ export class BlocksService extends AbstractService {
 	): Promise<IBlock> {
 		const { api } = this;
 
-		const [{ block }, events, validators] = await Promise.all([
+		const [{ block }, events] = await Promise.all([
 			api.rpc.chain.getBlock(hash),
 			this.fetchEvents(api, hash),
-			api.query.session.validators.at(hash),
 		]);
 
 		const {
@@ -59,7 +58,8 @@ export class BlocksService extends AbstractService {
 			digest,
 		} = block.header;
 
-		const authorId = this.extractAuthor(validators, digest);
+		// const authorId = this.extractAuthor(validators, digest);
+		const authorId = undefined;
 
 		const logs = digest.logs.map((log) => {
 			const { type, index, value } = log;
@@ -467,30 +467,30 @@ export class BlocksService extends AbstractService {
 
 	// Almost exact mimic of https://github.com/polkadot-js/api/blob/master/packages/api-derive/src/chain/getHeader.ts#L27
 	// but we save a call to `getHeader` by hardcoding the logic here and using the digest from the blocks header.
-	private extractAuthor(
-		sessionValidators: AccountId[],
-		digest: Digest
-	): AccountId | undefined {
-		const [pitem] = digest.logs.filter(({ type }) => type === 'PreRuntime');
+	// private extractAuthor(
+	// 	sessionValidators: AccountId[],
+	// 	digest: Digest
+	// ): AccountId | undefined {
+	// 	const [pitem] = digest.logs.filter(({ type }) => type === 'PreRuntime');
 
-		// extract from the substrate 2.0 PreRuntime digest
-		if (pitem) {
-			const [engine, data] = pitem.asPreRuntime;
+	// 	// extract from the substrate 2.0 PreRuntime digest
+	// 	if (pitem) {
+	// 		const [engine, data] = pitem.asPreRuntime;
 
-			return engine.extractAuthor(data, sessionValidators);
-		} else {
-			const [citem] = digest.logs.filter(
-				({ type }) => type === 'Consensus'
-			);
+	// 		return engine.extractAuthor(data, sessionValidators);
+	// 	} else {
+	// 		const [citem] = digest.logs.filter(
+	// 			({ type }) => type === 'Consensus'
+	// 		);
 
-			// extract author from the consensus (substrate 1.0, digest)
-			if (citem) {
-				const [engine, data] = citem.asConsensus;
+	// 		// extract author from the consensus (substrate 1.0, digest)
+	// 		if (citem) {
+	// 			const [engine, data] = citem.asConsensus;
 
-				return engine.extractAuthor(data, sessionValidators);
-			}
-		}
+	// 			return engine.extractAuthor(data, sessionValidators);
+	// 		}
+	// 	}
 
-		return undefined;
-	}
+	// 	return undefined;
+	// }
 }

@@ -1,3 +1,6 @@
 {
-  "CUSTOM_TYPES": {}
+  "CUSTOM_TYPES": {
+    	"Address": "AccountId",
+			"LookupSource": "AccountId"
+  }
 }
