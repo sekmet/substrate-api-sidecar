@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import { Mainnet } from '@edgeware/node-types';
 import { ApiPromise } from '@polkadot/api';
 import { WsProvider } from '@polkadot/rpc-provider';
 import { json } from 'express';
@@ -57,9 +58,7 @@ async function main() {
 	// Instantiate a web socket connection to the node for basic polkadot-js use
 	const api = await ApiPromise.create({
 		provider: new WsProvider(config.SUBSTRATE.WS_URL),
-		types: {
-			...config.SUBSTRATE.CUSTOM_TYPES,
-		},
+		...Mainnet,
 	});
 
 	// Gather some basic details about the node so we can display a nice message
